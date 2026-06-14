@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { SmartGrid } from 'react-native-smart-grid';
 import type { LayoutItem, SmartGridRef, Tile } from 'react-native-smart-grid';
 
@@ -15,27 +16,79 @@ const INITIAL_TILES: Tile<CardData>[] = [
     id: '1',
     position: { x: 0, y: 0 },
     size: { w: 2, h: 2 },
-    data: { label: 'Large', color: '#6366f1' },
+    data: { label: '🎵 Music', color: '#6366f1' },
   },
   {
     id: '2',
     position: { x: 2, y: 0 },
     size: { w: 2, h: 1 },
-    data: { label: 'Wide', color: '#f59e0b' },
+    data: { label: '📸 Photos', color: '#f59e0b' },
   },
   {
     id: '3',
     position: { x: 2, y: 1 },
     size: { w: 1, h: 1 },
-    data: { label: 'S', color: '#10b981' },
-    draggable: false,
+    data: { label: '📝 Notes', color: '#10b981' },
   },
   {
     id: '4',
     position: { x: 3, y: 1 },
     size: { w: 1, h: 1 },
-    data: { label: 'S', color: '#ef4444' },
-    selectable: false,
+    data: { label: '✅ Tasks', color: '#ef4444' },
+  },
+  {
+    id: '5',
+    position: { x: 0, y: 2 },
+    size: { w: 1, h: 1 },
+    data: { label: '🗺️ Maps', color: '#8b5cf6' },
+  },
+  {
+    id: '6',
+    position: { x: 1, y: 2 },
+    size: { w: 1, h: 1 },
+    data: { label: '📰 News', color: '#ec4899' },
+  },
+  {
+    id: '7',
+    position: { x: 2, y: 2 },
+    size: { w: 2, h: 1 },
+    data: { label: '🌤️ Weather', color: '#14b8a6' },
+  },
+  {
+    id: '8',
+    position: { x: 0, y: 3 },
+    size: { w: 4, h: 1 },
+    data: { label: '📅 Calendar', color: '#f97316' },
+  },
+  {
+    id: '9',
+    position: { x: 0, y: 4 },
+    size: { w: 1, h: 2 },
+    data: { label: '💬 Chat', color: '#0ea5e9' },
+  },
+  {
+    id: '10',
+    position: { x: 1, y: 4 },
+    size: { w: 2, h: 1 },
+    data: { label: '🎬 Videos', color: '#d946ef' },
+  },
+  {
+    id: '11',
+    position: { x: 3, y: 4 },
+    size: { w: 1, h: 1 },
+    data: { label: '🔔 Alerts', color: '#f43f5e' },
+  },
+  {
+    id: '12',
+    position: { x: 1, y: 5 },
+    size: { w: 1, h: 1 },
+    data: { label: '⚙️ Settings', color: '#64748b' },
+  },
+  {
+    id: '13',
+    position: { x: 2, y: 5 },
+    size: { w: 2, h: 1 },
+    data: { label: '🛒 Shop', color: '#84cc16' },
   },
 ];
 
@@ -93,78 +146,81 @@ export default function App() {
   }
 
   return (
-    /**
-     * GestureHandlerRootView must wrap your entire app (or at least SmartGrid).
-     * Put it at the root of your navigation stack, not just around SmartGrid.
-     */
     <GestureHandlerRootView style={styles.root}>
-      <View style={styles.toolbar}>
-        {/* Calls autoArrange() on the ref — re-packs all tiles largest-first */}
-        <Button
-          title="Auto-arrange"
-          onPress={() => gridRef.current?.autoArrange()}
-        />
-        {/* isEditing=true shows a resize handle on each tile's bottom-right corner */}
-        <Button
-          title={isEditing ? 'Done' : 'Edit'}
-          onPress={() => setIsEditing((e) => !e)}
-        />
-        {selectedIds.length > 0 && (
-          <Button
-            title={`Clear (${selectedIds.length})`}
-            onPress={() => gridRef.current?.clearSelection()}
-          />
-        )}
-      </View>
-
-      <SmartGrid
-        ref={gridRef}
-        selectable={true} // enable long-press to select tiles
-        multiSelect={true} // long-press to select multiple tiles
-        draggable={true} // enable drag-and-drop
-        data={tiles}
-        onTilePress={(tile) => console.log('Tile pressed:', tile.id, tile.data)}
-        columns={4} // number of grid columns
-        rowHeight={90} // height of one row in px
-        gap={8} // gap between tiles in px
-        padding={12} // outer padding in px
-        collisionBehavior="push" // 'push' | 'swap'
-        gravity="up" // 'none' | 'up' | 'left' — compacts after each drop
-        isEditing={isEditing}
-        onLayoutChange={handleLayoutChange}
-        /**
-         * onSelectionChange fires whenever the selected tile IDs change.
-         * Long press + release toggles the tile in the array.
-         * A real drop clears the array. Use gridRef.current.clearSelection() to reset.
-         */
-        onSelectionChange={(ids) => {
-          console.log('Selection changed:', ids);
-          setSelectedIds(ids);
-        }}
-        /**
-         * renderTile receives { item, isActive, isSelected }.
-         * isSelected is true when this tile is in the selection array.
-         */
-        renderTile={({ item, isActive, isSelected }) => (
-          <View
-            style={[
-              styles.card,
-              { backgroundColor: item.data.color },
-              isActive && styles.cardActive,
-              isSelected && styles.cardSelected,
-            ]}
-          >
-            <Text style={styles.label}>{item.data.label}</Text>
-            {isSelected && <Text style={styles.deleteHint}>✕ Delete</Text>}
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.toolbar}>
+            {/* Calls autoArrange() on the ref — re-packs all tiles largest-first */}
+            <Button
+              title="Auto-arrange"
+              onPress={() => gridRef.current?.autoArrange()}
+            />
+            {/* isEditing=true shows a resize handle on each tile's bottom-right corner */}
+            <Button
+              title={isEditing ? 'Done' : 'Edit'}
+              onPress={() => setIsEditing((e) => !e)}
+            />
+            {selectedIds.length > 0 && (
+              <Button
+                title={`Clear (${selectedIds.length})`}
+                onPress={() => gridRef.current?.clearSelection()}
+              />
+            )}
           </View>
-        )}
-      />
+
+          <SmartGrid
+            ref={gridRef}
+            selectable={true} // enable long-press to select tiles
+            multiSelect={true} // long-press to select multiple tiles
+            draggable={true} // enable drag-and-drop
+            data={tiles}
+            onTilePress={(tile) =>
+              console.log('Tile pressed:', tile.id, tile.data)
+            }
+            columns={4} // number of grid columns
+            rowHeight={90} // height of one row in px
+            gap={8} // gap between tiles in px
+            padding={12} // outer padding in px
+            collisionBehavior="push" // 'push' | 'swap'
+            gravity="up" // 'none' | 'up' | 'left' — compacts after each drop
+            isEditing={isEditing}
+            onLayoutChange={handleLayoutChange}
+            /**
+             * onSelectionChange fires whenever the selected tile IDs change.
+             * Long press + release toggles the tile in the array.
+             * A real drop clears the array. Use gridRef.current.clearSelection() to reset.
+             */
+            onSelectionChange={(ids) => {
+              console.log('Selection changed:', ids);
+              setSelectedIds(ids);
+            }}
+            /**
+             * renderTile receives { item, isActive, isSelected }.
+             * isSelected is true when this tile is in the selection array.
+             */
+            renderTile={({ item, isActive, isSelected }) => (
+              <View
+                style={[
+                  styles.card,
+                  { backgroundColor: item.data.color },
+                  isActive && styles.cardActive,
+                  isSelected && styles.cardSelected,
+                ]}
+              >
+                <Text style={styles.label}>{item.data.label}</Text>
+                {isSelected && <Text style={styles.deleteHint}>✕ Delete</Text>}
+              </View>
+            )}
+          />
+        </SafeAreaView>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#0f0f0f' },
+  safeArea: { flex: 1 },
   toolbar: {
     padding: 8,
     backgroundColor: '#1a1a1a',

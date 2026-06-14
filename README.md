@@ -4,7 +4,9 @@ A draggable, variable-sized tile grid for React Native. Think iOS home screen me
 
 > **Nothing like this exists in the RN ecosystem.** Every other grid library uses uniform tile sizes. This one doesn't.
 
-<!-- Add a GIF demo here before publishing -->
+| Drag & Drop | Multi-Select | Resize & Edit |
+|:-----------:|:------------:|:-------------:|
+| ![Drag and drop demo](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/drag-drop.gif) | ![Multi-select demo](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/multi-select.gif) | ![Resize demo](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/resize.gif) |
 
 ## Features
 
@@ -193,6 +195,14 @@ const gridRef = useRef<SmartGridRef>(null);
 
 ## Usage examples
 
+### Drag & drop
+
+Long press any tile to lift it, drag to a new position, and release to drop. Other tiles animate out of the way automatically.
+
+![Drag and drop](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/drag-drop.gif)
+
+---
+
 ### Collision behavior
 
 `'push'` displaces tiles to the next free slot. `'swap'` exchanges the dragged tile with the one at the drop center.
@@ -225,6 +235,9 @@ Automatically compacts the layout after every drop.
 ---
 
 ### Edit mode and resize
+
+![Resize demo](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/resize.gif)
+
 
 ```tsx
 const [isEditing, setIsEditing] = useState(false);
@@ -270,6 +283,9 @@ Use `locked` on a tile to hide its resize handle while still allowing drag:
 ---
 
 ### Selection — multi-select (default)
+
+![Multi-select demo](https://github.com/warlock001/react-native-smart-grid/raw/main/docs/multi-select.gif)
+
 
 Long press a tile to enter selection mode. While selected, tapping any tile adds or removes it. A real drag-and-drop clears the selection.
 

@@ -8,6 +8,9 @@
     ".": {
       "source": "./src/index.tsx",
       "types": "./lib/typescript/src/index.d.ts",
+      "import": {
+        "default": "./lib/module/index.js"
+      },
       "default": "./lib/module/index.js"
     },
     "./package.json": "./package.json"
@@ -41,19 +44,27 @@
   },
   "keywords": [
     "react-native",
+    "grid",
+    "drag",
+    "drag-and-drop",
+    "draggable",
+    "tile",
+    "masonry",
+    "dashboard",
+    "layout",
     "ios",
     "android"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zabloona/react-native-smart-grid.git"
+    "url": "git+https://github.com/warlock001/react-native-smart-grid.git"
   },
-  "author": "Admin <zabloona@gmail.com> (https://github.com/zabloona)",
+  "author": "Zabloon Albert <zabloona@gmail.com> (https://github.com/warlock001)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zabloona/react-native-smart-grid/issues"
+    "url": "https://github.com/warlock001/react-native-smart-grid/issues"
   },
-  "homepage": "https://github.com/zabloona/react-native-smart-grid#readme",
+  "homepage": "https://github.com/warlock001/react-native-smart-grid#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -75,13 +86,25 @@
     "prettier": "^3.8.3",
     "react": "19.2.0",
     "react-native": "0.83.6",
-    "react-native-builder-bob": "^0.41.0",
+    "react-native-builder-bob": "^0.42.1",
+    "react-native-gesture-handler": "^3.0.1",
+    "react-native-reanimated": "^4.4.1",
     "turbo": "^2.9.16",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-gesture-handler": ">=2.0.0",
+    "react-native-reanimated": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": false
+    },
+    "react-native-reanimated": {
+      "optional": false
+    }
   },
   "workspaces": [
     "example"
@@ -114,6 +137,13 @@
   },
   "jest": {
     "preset": "@react-native/jest-preset",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|@react-native)/)"
+    ],
+    "moduleNameMapper": {
+      "react-native-reanimated": "<rootDir>/src/__mocks__/reanimated.js",
+      "react-native-gesture-handler": "<rootDir>/src/__mocks__/gesture-handler.js"
+    },
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"

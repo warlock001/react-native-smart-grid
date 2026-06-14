@@ -37,9 +37,31 @@ yarn add react-native-smart-grid
 npm install react-native-gesture-handler react-native-reanimated
 ```
 
+> **Reanimated v4+:** Starting with `react-native-reanimated@4`, the worklets runtime ships as a separate package. If you get a build error about `react-native-worklets` not being found, install it too:
+> ```sh
+> npm install react-native-worklets
+> ```
+
 Follow the setup guides for each:
 - [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation)
 - [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started)
+
+### Babel plugin
+
+Add the Reanimated plugin to your `babel.config.js` — it **must be listed last**:
+
+```js
+module.exports = {
+  presets: ['module:@react-native/babel-preset'],
+  plugins: ['react-native-reanimated/plugin'],
+};
+```
+
+After adding it, restart Metro with a cleared cache:
+
+```sh
+npx react-native start --reset-cache
+```
 
 Wrap your app root (or at minimum the screen containing `SmartGrid`) with `GestureHandlerRootView`:
 
